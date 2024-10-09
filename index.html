@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Próximo Feriado</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+        }
+        .widget {
+            text-align: center;
+            cursor: pointer;
+            padding: 10px;
+            transition: opacity 0.3s ease;
+        }
+        .widget:hover {
+            opacity: 0.8;
+        }
+        .days {
+            font-size: 36px;
+            font-weight: bold;
+            color: #8e44ad;
+            margin: 5px 0;
+        }
+        .holiday-name {
+            font-size: 16px;
+            color: #333;
+            margin-top: 5px;
+        }
+        .holiday-date {
+            font-size: 14px;
+            color: #666;
+        }
+        .label {
+            font-size: 14px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="widget" id="widgetContainer">
+        <div class="label">Faltan</div>
+        <div class="days" id="daysRemaining"></div>
+        <div class="label">días para el próximo feriado</div>
+        <div class="holiday-name" id="holidayName"></div>
+        <div class="holiday-date" id="holidayDate"></div>
+    </div>
+
+    <script>
+        const holidays = [
+            { date: new Date(2024, 9, 11), name: "Feriado con fines turísticos" },
+            { date: new Date(2024, 9, 12), name: "Día del Respeto a la Diversidad Cultural" },
+            { date: new Date(2024, 10, 18), name: "Día de la Soberanía Nacional" },
+            { date: new Date(2024, 11, 8), name: "Inmaculada Concepción de María" },
+            { date: new Date(2024, 11, 25), name: "Navidad" }
+        ];
+
+        function updateCountdown() {
+            const now = new Date();
+            const nextHoliday = holidays.find(holiday => holiday.date > now);
+
+            if (nextHoliday) {
+                const timeDiff = nextHoliday.date.getTime() - now.getTime();
+                const daysRemaining = Math.ceil(timeDiff / (1000 * 3600 * 24));
+
+                document.getElementById('daysRemaining').textContent = daysRemaining;
+                document.getElementById('holidayName').textContent = nextHoliday.name;
+                document.getElementById('holidayDate').textContent = nextHoliday.date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+            } else {
+                document.getElementById('daysRemaining').textContent = "0";
+                document.getElementById('holidayName').textContent = "No hay feriados próximos";
+                document.getElementById('holidayDate').textContent = "";
+            }
+        }
+
+        document.getElementById('widgetContainer').addEventListener('click', function() {
+            window.top.location.href = 'https://www.argentina.gob.ar/interior/feriados-nacionales-2024';
+        });
+
+        updateCountdown();
+        setInterval(updateCountdown, 86400000); // Update once a day
+    </script>
+</body>
+</html>
